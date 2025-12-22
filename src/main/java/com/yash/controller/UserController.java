@@ -73,15 +73,16 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO req) {
 
         User user = userRepository.findByUsername(req.getUsername());
-        System.out.println("user : " + user.getUsername());
 
         if (user != null && passwordEncoder.matches(req.getPassword(), user.getPassword())) {
 
             String token = jwtUtil.generateToken(user);
+            System.out.println("token : "+token);
 
             LoginResponseDTO response = new LoginResponseDTO(
                     token
             );
+
 
             return ResponseEntity.ok(response);
         }
