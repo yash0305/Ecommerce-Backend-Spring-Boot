@@ -1,5 +1,6 @@
 package com.yash.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yash.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // 🔗 sellerId FK → SellerProfile
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     private SellerProfile seller;
