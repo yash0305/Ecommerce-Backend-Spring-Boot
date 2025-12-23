@@ -35,4 +35,8 @@ public class SellerProfile {
             fetch = FetchType.LAZY
     )
     private List<Products> products = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
 }
