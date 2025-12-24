@@ -4,6 +4,7 @@ import com.yash.entity.EmailVerificationToken;
 import com.yash.entity.SellerProfile;
 import com.yash.enums.ApplicationStatus;
 import com.yash.repository.EmailVerificationTokenRepository;
+import com.yash.repository.SellerProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 public class SellerVerificationController {
 
     private final EmailVerificationTokenRepository tokenRepository;
-    private final SellerRepository sellerRepository;
+    private final SellerProfileRepository sellerRepository;
 
     @GetMapping("/verify")
     public ResponseEntity<?> verifySeller(@RequestParam String token) {
