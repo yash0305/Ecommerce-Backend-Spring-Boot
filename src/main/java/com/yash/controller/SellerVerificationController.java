@@ -29,11 +29,11 @@ public class SellerVerificationController {
                 tokenRepository.findByToken(token);
 
         if (verificationToken == null) {
-            return ResponseEntity.badRequest().body("Invalid token");
+            return ResponseEntity.badRequest().body("Invalid verification token");
         }
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body("Token expired");
+            return ResponseEntity.badRequest().body("Verification token expired");
         }
 
         SellerProfile seller = verificationToken.getSeller();
@@ -46,3 +46,5 @@ public class SellerVerificationController {
         return ResponseEntity.ok("Email verified successfully. Seller approved.");
     }
 }
+
+

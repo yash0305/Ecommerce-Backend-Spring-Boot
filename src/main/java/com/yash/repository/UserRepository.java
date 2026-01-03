@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 
 
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Long>{
 
     @Query(value = "Select * from users", nativeQuery = true)
     List<User> findAllAdmin();

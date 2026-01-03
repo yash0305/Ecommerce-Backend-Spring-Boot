@@ -73,6 +73,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO req) {
 
         User user = userRepository.findByUsername(req.getUsername());
+        System.out.println(user);
 
         if (user != null && passwordEncoder.matches(req.getPassword(), user.getPassword())) {
 

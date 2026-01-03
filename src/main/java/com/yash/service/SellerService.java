@@ -52,8 +52,10 @@ public class SellerService {
         // send verification email
         String verifyLink = "http://localhost:8080/seller/verify?token=" + token;
 
+        System.out.println("Sending email to: " + savedSeller.getUser().getEmail());
+
         emailService.sendEmail(
-                savedSeller.getUser().getEmail(),   // ✅ CORRECT
+                savedSeller.getUser().getEmail(),
                 "Verify your seller account",
                 "Click to verify your email: " + verifyLink
         );
