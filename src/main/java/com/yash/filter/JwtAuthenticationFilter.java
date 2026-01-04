@@ -28,11 +28,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+
+        return uri.startsWith("/otp/")
+                || uri.startsWith("/user/")
+                || uri.startsWith("/seller/");
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println("JWT FILTER HIT ❌ : " + request.getRequestURI());
+
 
         String authHeader = request.getHeader("Authorization");
 

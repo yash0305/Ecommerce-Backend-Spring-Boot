@@ -92,8 +92,9 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
 
         User savedUser = userRepository.save(user);
+        String token = UUID.randomUUID().toString();
 
-        // ---------- IF SELLER ----------
+
         if (role == Role.SELLER) {
 
 
@@ -105,7 +106,6 @@ public class UserService {
             SellerProfile savedSeller = sellerRepository.save(seller);
 
             // Create Email Verification Token
-            String token = UUID.randomUUID().toString();
 
             EmailVerificationToken verificationToken = new EmailVerificationToken();
             verificationToken.setToken(token);
@@ -114,15 +114,18 @@ public class UserService {
 
             emailVerificationTokenRepository.save(verificationToken);
 
+        }
+
             // Send verification email
             String verifyLink = "http://localhost:8080/seller/verify?token=" + token;
 
             emailService.sendEmail(
                     savedUser.getEmail(),
                     "Verify your Seller Account",
-                    "Click the link to verify your account:\n" + verifyLink
+                    "Click the link to verify your account:\n",
+                    verifyLink
             );
-        }
+
 
         return savedUser;
     }

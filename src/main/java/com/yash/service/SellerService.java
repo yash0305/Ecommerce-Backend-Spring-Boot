@@ -57,7 +57,8 @@ public class SellerService {
         emailService.sendEmail(
                 savedSeller.getUser().getEmail(),
                 "Verify your seller account",
-                "Click to verify your email: " + verifyLink
+                "Click to verify your email: ",
+                verifyLink
         );
     }
 }
