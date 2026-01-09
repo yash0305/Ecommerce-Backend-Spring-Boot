@@ -39,4 +39,7 @@ public class SellerProfile {
     @Column(nullable = false)
     private boolean emailVerified = false;
 
+    @Column(nullable = false)
+    private boolean mobileVerified = false;
+
 }

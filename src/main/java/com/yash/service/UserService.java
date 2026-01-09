@@ -19,6 +19,8 @@ import com.yash.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.yash.util.OtpGenerator.generate6DigitOtp;
+
 
 @Service
 public class UserService {
@@ -37,6 +39,12 @@ public class UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private OtpService otpService;
+
+    @Autowired
+    private NotificationCacheService cacheService;
 
 
     @Transactional
@@ -125,6 +133,15 @@ public class UserService {
                     "Click the link to verify your account:\n",
                     verifyLink
             );
+
+            String redisKey = "MOBILE_NOTIFICATION:" + mobileNumber;
+            String otp = generate6DigitOtp();
+
+            // Save notification in Redis with TTL
+            cacheService.saveNotification(redisKey, otp);
+
+            String response = otpService.callOtpApi(mobileNumber, otp);
+
 
 
         return savedUser;

@@ -32,11 +32,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
+        System.out.println("URI: " + request.getRequestURI());
 
-        return uri.startsWith("/otp/")
-                || uri.startsWith("/user/")
-                || uri.startsWith("/seller/");
+        return uri.contains("/otp/")
+                || uri.contains("/user/")
+                || uri.contains("/seller/")
+                || uri.contains("/api/notifications/");
     }
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
