@@ -31,8 +31,6 @@ public class AdminController {
 
         return adminService.markSellerApproved(sellerId);
 
-
-
     }
 
 }
