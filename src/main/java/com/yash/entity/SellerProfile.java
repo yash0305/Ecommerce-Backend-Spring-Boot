@@ -36,10 +36,10 @@ public class SellerProfile {
     )
     private List<Products> products = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column(name = "email_verified",nullable = false)
     private boolean emailVerified = false;
 
-    @Column(nullable = false)
+    @Column(name="mobile_verified", nullable = false)
     private boolean mobileVerified = false;
 
 }

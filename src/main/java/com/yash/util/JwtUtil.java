@@ -1,7 +1,9 @@
 package com.yash.util;
 
 import com.yash.enums.Role;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import com.yash.entity.User;
@@ -23,49 +25,38 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(User user) {
-    return Jwts.builder()
-        .setSubject(user.getUsername())
-        .claim("role", user.getRole())
-        .setIssuedAt(new Date())
-        .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
-        .signWith(key)
-        .compact();
-}
+    public String generateToken(User user, long expiry) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiry))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
 
     public String extractUsername(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return Jwts.parser().setSigningKey(key)
+                .parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String extractRole(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", String.class);
+    public boolean isExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
     }
 
-    public Role extractRoleEnum(String token) {
-        String role = extractRole(token);
-        return Role.valueOf(role);
+    private Claims extractClaims(String token){
+        return Jwts.parser().setSigningKey(key)
+                .parseClaimsJws(token).getBody();
     }
 
+    public String generateAccessToken(User user){
+        return generateToken(user, 15 * 60 * 1000);
+//        return generateToken(user, 2 * 60 * 1000);
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    }
+
+    public String generateRefreshToken(User user)
+    {
+        return generateToken(user, 7L * 24 * 60 * 60 * 1000);
     }
 }

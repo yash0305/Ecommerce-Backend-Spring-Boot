@@ -28,13 +28,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.CUSTOMER;
-    @Column(nullable = false, unique = true)
+    @Column(name = "mobile_number", nullable = false, unique = true)
     private String mobileNumber;
     @Column(nullable = false, unique = true)
     private String email;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @Column(name= "updated_at")
     private LocalDateTime updatedAt;
 
     @JsonIgnore
