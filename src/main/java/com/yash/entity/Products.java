@@ -42,7 +42,7 @@ public class Products {
     @Column(nullable = false)
     private String category;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", length = 1500)
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)

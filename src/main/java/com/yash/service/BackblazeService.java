@@ -12,8 +12,12 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import jakarta.annotation.PostConstruct;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -287,4 +291,35 @@ public class BackblazeService {
             this.storageClass = storageClass;
         }
     }
+
+
+    public String generateSignedUrl(String fileName) {
+
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(
+                accessKeyId,
+                secretAccessKey
+        );
+
+        S3Presigner presigner = S3Presigner.builder()
+                .region(Region.of("us-east-005"))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .endpointOverride(java.net.URI.create("https://s3.us-east-005.backblazeb2.com"))
+                .build();
+
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket("my-ecommerce-files")
+                .key(fileName)
+                .build();
+
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofDays(7)) // URL valid 7 days
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+        URL signedUrl = presigner.presignGetObject(presignRequest).url();
+
+        return signedUrl.toString();
+    }
+
+
 }

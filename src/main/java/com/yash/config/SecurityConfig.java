@@ -77,6 +77,7 @@ public class SecurityConfig {
                         .requestMatchers("/seller/**").hasRole("SELLER")
                         .requestMatchers("/customer/**").hasRole("CUSTOMER")
 
+
                         // ANY AUTHENTICATED USER
                         .anyRequest().authenticated()
                 )
