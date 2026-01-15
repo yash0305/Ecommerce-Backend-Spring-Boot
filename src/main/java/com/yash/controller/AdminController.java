@@ -36,6 +36,13 @@ public class AdminController {
 
     }
 
+    @PostMapping("rejected")
+    public ResponseEntity<?> rejectedSeller(@RequestParam Long sellerId){
+
+        return adminService.markSellerRejected(sellerId);
+
+    }
+
     @GetMapping("/sellers")
     public ResponseEntity<List<SellerInfoDTO>> sendAllSellerData() {
 

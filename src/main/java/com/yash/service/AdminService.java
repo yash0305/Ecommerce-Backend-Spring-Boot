@@ -33,7 +33,29 @@ public class AdminService {
         else{
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("Access denied: Seller role required");
+                    .body("Access denied: Admin role required");
+
+        }
+
+    }
+
+    public ResponseEntity<?> markSellerRejected(Long sellerId){
+
+        User seller = userRepository.findById(sellerId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Seller not found"));
+
+
+        if (seller.getSellerProfile() != null) {
+
+            seller.getSellerProfile().setStatus(ApplicationStatus.REJECTED);
+            userRepository.save(seller);
+            return ResponseEntity.ok("Seller Rejected");
+        }
+        else{
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Access denied: Admin role required");
 
         }
 

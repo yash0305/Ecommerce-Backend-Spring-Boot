@@ -25,7 +25,7 @@ public interface SellerRepository extends JpaRepository<SellerProfile ,Long> {
 //""", nativeQuery = true)
 //    List<SellerInfoDTO> fetchSellerInfo();
 
-    @Query("SELECT new com.yash.dto.SellerInfoDTO(u.username, u.mobileNumber, u.email, " +
+    @Query("SELECT new com.yash.dto.SellerInfoDTO(s.id, u.username, u.mobileNumber, u.email, " +
             "s.status, s.emailVerified, s.mobileVerified) " +
             "FROM User u JOIN u.sellerProfile s WHERE u.role = 'SELLER'")
     List<SellerInfoDTO> fetchSellerInfo();

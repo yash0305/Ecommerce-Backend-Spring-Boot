@@ -68,7 +68,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**","/seller/**", "/otp/**","/api/notifications/**").permitAll()
+
+                        // PUBLIC
+                        .requestMatchers("/user/**","/otp/**","/api/notifications/**").permitAll()
+
+                        // ROLE BASED
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/seller/**").hasRole("SELLER")
+                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
+
+                        // ANY AUTHENTICATED USER
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -76,6 +85,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 
 

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class SellerInfoDTO {
 
+    private Long id;
     private String username;
     private String mobileNumber;
     private String email;
